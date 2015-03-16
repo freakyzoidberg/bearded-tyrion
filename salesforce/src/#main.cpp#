@@ -1,0 +1,88 @@
+#include <sstream>
+#include <iostream>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include <regex>
+
+using namespace std;
+
+static const regex phone_reg("^+.*");
+
+void split(const string &s, char delim, vector<string> &elems) {
+  stringstream ss(s);
+  string item;
+
+  while (getline(ss, item, delim)) {
+    elems.push_back(item);
+  }
+}
+
+vector<string> split(const string &s, char delim) {
+  vector<string> elems;
+  split(s, delim, elems);
+  return elems;
+}
+
+class Person {
+public:
+  Person(vector<string> &v) {
+    last_name = v[0];
+    first_name = v[1];
+    company = v[2];
+    phone = v[3];
+    country = v[4];
+  }
+  ~Person() {}
+  bool operator<( const Person& other) const
+  {
+    if ( last_name == other.last_name ) {
+      if (first_name == other.first_name) {
+        return company < other.company;
+      }
+      return first_name < other.first_name;  
+    }
+    return last_name < other.last_name;
+  }
+  bool phoneIsValid() const {
+    smatch m;
+    regex_search(phone, m, phone_reg);
+    for(std::size_t n = 0; n < m.size(); ++n)
+      std::cout << " m[" << n << "]=[" << m[n] << "] "
+    return !m.empty();
+  }
+
+  string last_name;
+  string first_name;
+  string company;
+  string phone;
+  string country;
+};
+
+
+
+int main(int argc, char** argv)
+{
+  int count;
+  vector<string> countries;
+  map<Person, unsigned> dedup_store;
+  string tmp;
+
+  cin >> count;
+  cin >> tmp;
+  countries = split(tmp, ';');
+  
+  while (count--) {
+    cin >> tmp;
+    vector<string> v = split(tmp, ';');
+    dedup_store[Person(v)]++;
+  }
+
+  unsigned dup = 0;
+  for (auto &p : dedup_store) {
+    dup += p.second - 1;
+    cout << p.first.phone << (p.first.phoneIsValid()?"true":"false") << endl;;
+
+  }
+  cout << dup << endl;
+}
