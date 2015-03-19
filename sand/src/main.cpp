@@ -20,7 +20,7 @@ public:
         if (_map[i] == -2) {
           done = false;
           int cost = getCostAround(i);
-          if (cost > 0)
+          if (cost > 0 && cost != _h * _l)
             _map[i] = cost;
         }
       }
@@ -33,7 +33,7 @@ private:
   int _h;
   int _l;
   int getCostAround(int i) {
-    int cost = 0;
+    int cost = _h * _l;
     int x = i % _l;
     int y = i / _l;
     
@@ -41,7 +41,7 @@ private:
       int t = at(x, y - 1);
       if (t == -1)
         return 1;
-      if (cost < t)
+      if (cost > t)
         cost = t + 1;
     }
     
@@ -49,7 +49,7 @@ private:
       int t = at(x, y + 1);
       if (t == -1)
         return 1;
-      if (cost < t)
+      if (cost > t)
         cost = t + 1;
     }
     
@@ -57,7 +57,7 @@ private:
       int t = at(x + 1, y);
       if (t == -1)
         return 1;
-      if (cost < t)
+      if (cost > t)
         cost = t + 1;
     }
     
@@ -65,7 +65,7 @@ private:
       int t = at(x - 1, y);
       if (t == -1)
         return 1;
-      if (cost < t)
+      if (cost > t)
         cost = t + 1;
     }
     
