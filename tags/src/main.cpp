@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 typedef pair<string, unsigned> tag_count;
 
 struct CountCmp {
@@ -21,13 +20,16 @@ int main(int argc, char** argv)
   map<string, unsigned> cloud;
 
   cin >> count;
-    while(count--) {
+  while(count--) {
     cin >> word;
     cloud[word]++;
   }
+  
   vector<tag_count> tags(cloud.begin(), cloud.end());
   partial_sort(tags.begin(), tags.begin() + 5, tags.end(), CountCmp());
   vector<tag_count>::const_iterator it = tags.begin();
-  for (; it != tags.begin() + 5; it++)
+  
+  for (; it != tags.begin() + 5; it++) {
     cout << it->first << " " << it->second << endl;
+  }
 }
